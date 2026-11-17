@@ -24,7 +24,7 @@ import { Avatar, Progress, Toggle } from '../components/Bits.jsx';
 import Icon from '../components/Icon.jsx';
 
 const PREFS_KEY = 'itools.topPrefs';
-const QUICK_QUERIES = ['Садовод', 'Садовод рынок', 'ТК Садовод', 'Садовод опт', 'Садовод одежда', 'Садовод обувь', 'Садовод детская одежда'];
+const QUICK_QUERIES = ['Садовод', 'Садовод рынок', 'Садовод опт', 'Садовод одежда', 'Садовод обувь', 'Садовод детская одежда'];
 const PERIODS = [
   [7, '7 дней'],
   [30, '30 дней'],
@@ -173,29 +173,6 @@ function SadovodSearch() {
   );
 }
 
-function AggregatorNote() {
-  return (
-    <details className="card help-card">
-      <summary>
-        <Icon name="alert" size={16} /> Приложения «Садовод Агрегатор» из Play Маркета
-      </summary>
-      <ul>
-        <li>
-          У приложений-агрегаторов (allall, tk-sad и др.) нет открытого API, поэтому iTools не может сам читать их каталог и рейтинги — это было
-          бы обходом их правил.
-        </li>
-        <li>
-          Что работает: найдите их официальные сообщества или продавцов по поиску выше («ТК Садовод», «allall») или добавьте ссылку во вкладке
-          «Мои аккаунты».
-        </li>
-        <li>
-          Из любого приложения (агрегатор, ВКонтакте) можно нажать «Поделиться» → <b>iTools</b>: ссылки на записи ВКонтакте попадут в поле VK
-          Publisher. Работает после установки iTools на главный экран.
-        </li>
-      </ul>
-    </details>
-  );
-}
 
 /** Инструмент 2: добавление аккаунтов и сообществ по ссылкам. */
 function AccountsAdd() {
@@ -388,10 +365,7 @@ export default function TopPage() {
       </div>
 
       {list === LISTS.SADOVOD ? (
-        <>
-          <SadovodSearch />
-          <AggregatorNote />
-        </>
+        <SadovodSearch />
       ) : (
         <AccountsAdd />
       )}

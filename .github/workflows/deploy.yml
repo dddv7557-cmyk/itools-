@@ -4,9 +4,9 @@
 # или ввести в самом приложении (Настройки → Приложение ВКонтакте). Это не секрет.
 name: Deploy iTools to GitHub Pages
 
+# Автоматический запуск отключён: iTools работает локально (start-itools.cmd).
+# Публикация на GitHub Pages — только вручную: Actions → Deploy iTools to GitHub Pages → Run workflow.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

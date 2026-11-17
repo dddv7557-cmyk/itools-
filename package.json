@@ -8,6 +8,8 @@
     "dev": "vp dev",
     "build": "vp build",
     "preview": "vp preview",
+    "local": "vp build && vp preview --host localhost --port 80 --strictPort",
+    "serve": "vp preview --host localhost --port 80 --strictPort",
     "test": "vp test run",
     "lint": "vp lint src tests",
     "icons": "node scripts/generate-icons.mjs"

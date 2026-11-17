@@ -13,7 +13,7 @@ import { loadSources } from './sources.js';
 const LINKS_DRAFT_KEY = 'itools.linksDraft';
 
 /**
- * Web Share Target: «Поделиться» → iTools из любого приложения Android (ВКонтакте, Садовод Агрегатор…).
+ * Web Share Target: «Поделиться» → iTools из любого приложения Android (например, ВКонтакте).
  * Присланный текст/ссылка дописывается в поле ссылок VK Publisher.
  * @returns {number} сколько символов получено (0 — это не share-запуск)
  */
