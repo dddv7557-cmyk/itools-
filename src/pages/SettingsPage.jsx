@@ -78,7 +78,7 @@ export default function SettingsPage() {
       danger: true,
     });
     if (!ok) return;
-    await Promise.all([idb.clear('posts'), idb.clear('history'), idb.clear('kv')]);
+    await Promise.all([idb.clear('posts'), idb.clear('history'), idb.clear('kv'), idb.clear('sources')]);
     try {
       localStorage.clear();
     } catch {
@@ -127,6 +127,15 @@ export default function SettingsPage() {
             </span>
           </label>
         </fieldset>
+        <div className="mt">
+          <Toggle
+            id="extended-scopes"
+            checked={s.requestExtendedScopes}
+            onChange={(v) => updateSettings({ requestExtendedScopes: v })}
+            label="Запрашивать расширенные доступы (wall, photos, video)"
+            description="Нужны только для публикации. Включайте, если VK уже выдал их вашему приложению, затем подключите аккаунт заново. Для загрузки записей и «Топ товаров» не нужны."
+          />
+        </div>
       </section>
 
       <section className="card">

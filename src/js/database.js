@@ -2,9 +2,10 @@
 // Хранилища:
 //  posts   — публикации рабочей области (оригинал, правки, время, вложения, статус)
 //  history — журнал операций (публикации, расписание, черновики, ошибки)
-//  kv      — настройки, зашифрованная сессия ВКонтакте, ключ шифрования
+//  kv      — настройки, зашифрованная сессия ВКонтакте, ключ шифрования, последние результаты «Топ товаров»
+//  sources — источники для «Топ товаров»: сообщества Садовода и добавленные аккаунты (v2)
 export const DB_NAME = 'itools';
-export const DB_VERSION = 1;
+export const DB_VERSION = 2;
 
 let dbPromise = null;
 
@@ -28,6 +29,10 @@ export function openDB() {
         history.createIndex('postId', 'postId');
       }
       if (!db.objectStoreNames.contains('kv')) db.createObjectStore('kv');
+      if (!db.objectStoreNames.contains('sources')) {
+        const sources = db.createObjectStore('sources', { keyPath: 'id' });
+        sources.createIndex('list', 'list');
+      }
     };
     req.onsuccess = () => {
       const db = req.result;

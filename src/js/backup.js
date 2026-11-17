@@ -3,13 +3,19 @@ import { idb } from './database.js';
 import { flushPending, initPosts } from './post-editor.js';
 import { loadHistory } from './history.js';
 import { loadSettings } from './settings.js';
+import { loadSources } from './sources.js';
 
 export const BACKUP_FORMAT = 'itools-backup';
 export const BACKUP_VERSION = 1;
 
 export async function createBackup() {
   await flushPending();
-  const [posts, history, settings] = await Promise.all([idb.getAll('posts'), idb.getAll('history'), idb.get('kv', 'settings')]);
+  const [posts, history, settings, sources] = await Promise.all([
+    idb.getAll('posts'),
+    idb.getAll('history'),
+    idb.get('kv', 'settings'),
+    idb.getAll('sources'),
+  ]);
   return {
     format: BACKUP_FORMAT,
     version: BACKUP_VERSION,
@@ -17,6 +23,7 @@ export async function createBackup() {
     settings: settings || {},
     posts,
     history,
+    sources,
   };
 }
 
@@ -65,9 +72,13 @@ export async function restoreBackup(data, mode = 'merge') {
   await idb.putMany('posts', posts);
   const history = data.history.map(({ id: _id, ...h }) => h);
   for (const h of history) await idb.put('history', h);
+  if (Array.isArray(data.sources)) {
+    if (mode === 'replace') await idb.clear('sources');
+    await idb.putMany('sources', data.sources.filter((s) => s && typeof s.id === 'string'));
+  }
   const current = (await idb.get('kv', 'settings')) || {};
   await idb.put('kv', { ...current, ...settings, vkAppId: current.vkAppId || '' }, 'settings');
-  await Promise.all([initPosts(), loadHistory(), loadSettings()]);
+  await Promise.all([initPosts(), loadHistory(), loadSettings(), loadSources()]);
   return { posts: posts.length, history: history.length, skipped: data.posts.length - posts.length };
 }
 

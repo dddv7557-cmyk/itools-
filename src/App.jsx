@@ -10,6 +10,7 @@ import PublisherPage from './pages/PublisherPage.jsx';
 import HistoryPage from './pages/HistoryPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
 import AccountPage from './pages/AccountPage.jsx';
+import TopPage from './pages/TopPage.jsx';
 import { Toasts, Dialogs } from './components/Overlays.jsx';
 import { Avatar } from './components/Bits.jsx';
 import Icon from './components/Icon.jsx';
@@ -27,9 +28,10 @@ const PAGES = {
   '/history': HistoryPage,
   '/settings': SettingsPage,
   '/account': AccountPage,
+  '/top': TopPage,
 };
 
-const TITLES = { '/publisher': 'VK Publisher', '/history': 'История', '/settings': 'Настройки', '/account': 'Аккаунт' };
+const TITLES = { '/publisher': 'VK Publisher', '/history': 'История', '/settings': 'Настройки', '/account': 'Аккаунт', '/top': 'Топ товаров' };
 
 function Header({ path }) {
   const online = useStore(onlineStore);
@@ -59,7 +61,7 @@ function BottomNav({ path }) {
   return (
     <nav className="bottom-nav" aria-label="Основное меню">
       {NAV.map((item) => {
-        const active = path === item.path || (item.path === '/settings' && path === '/account');
+        const active = path === item.path || (item.path === '/settings' && path === '/account') || (item.path === '/' && path === '/top');
         return (
           <button key={item.path} className={`nav-item ${active ? 'active' : ''}`} onClick={() => navigate(item.path)} aria-current={active ? 'page' : undefined}>
             <span className="nav-icon">

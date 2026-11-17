@@ -17,6 +17,9 @@ import { callApi, setTokenProvider, setAuthErrorHandler, API_VERSION } from './v
 import { getSettings } from './settings.js';
 
 export const VKID_HOST = 'https://id.vk.ru';
+// Базовый доступ достаточен для чтения: wall.get, wall.getById, groups.search, users.get (проверено по dev.vk.com).
+// wall/photos/video — расширенные доступы (по запросу в поддержку VK), нужны только для публикации.
+export const VKID_BASE_SCOPES = 'vkid.personal_info';
 export const VKID_SCOPES = 'vkid.personal_info wall photos video';
 export const CLASSIC_SCOPES = 'wall,photos,video,offline';
 const PENDING_KEY = 'auth:pending';
@@ -69,7 +72,7 @@ async function storeSession(next) {
 
 // --- вход ---------------------------------------------------------------------
 export async function startLogin() {
-  const { vkAppId, authMode } = getSettings();
+  const { vkAppId, authMode, requestExtendedScopes } = getSettings();
   const appId = String(vkAppId || '').trim();
   if (!/^\d+$/.test(appId)) throw new Error('Укажите ID приложения ВКонтакте в разделе «Настройки» (см. инструкцию README).');
   if (!navigator.onLine) throw new Error('Для подключения аккаунта нужен интернет.');
@@ -105,7 +108,7 @@ export async function startLogin() {
     state,
     code_challenge: challenge,
     code_challenge_method: 'S256',
-    scope: VKID_SCOPES,
+    scope: requestExtendedScopes ? VKID_SCOPES : VKID_BASE_SCOPES,
     lang_id: '0',
     scheme: 'light',
   }).toString();

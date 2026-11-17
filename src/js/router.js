@@ -1,7 +1,7 @@
 // Hash-роутер: работает на любом статическом хостинге (GitHub Pages, Netlify, Cloudflare Pages) без настройки.
 import { createStore } from './store.js';
 
-export const ROUTES = ['/', '/publisher', '/history', '/settings', '/account'];
+export const ROUTES = ['/', '/publisher', '/history', '/settings', '/account', '/top'];
 
 function parse() {
   const raw = (typeof location !== 'undefined' ? location.hash : '').replace(/^#/, '') || '/';

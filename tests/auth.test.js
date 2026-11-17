@@ -40,8 +40,14 @@ describe('VK ID (OAuth 2.1 + PKCE)', () => {
     expect(q.get('code_challenge_method')).toBe('S256');
     expect(q.get('code_challenge')).toMatch(/^[A-Za-z0-9_-]{43}$/);
     expect(q.get('state').length).toBeGreaterThanOrEqual(32);
-    expect(q.get('scope')).toContain('wall');
+    expect(q.get('scope')).toBe('vkid.personal_info'); // по умолчанию — только базовый доступ
     expect(url.href).not.toMatch(/secret|code_verifier/);
+  });
+
+  it('расширенные доступы запрашиваются только по настройке', async () => {
+    await updateSettings({ requestExtendedScopes: true });
+    await startLogin();
+    expect(new URL(assigned).searchParams.get('scope')).toBe('vkid.personal_info wall photos video');
   });
 
   it('handleRedirect: обмен кода, токен хранится зашифрованным, state проверяется', async () => {

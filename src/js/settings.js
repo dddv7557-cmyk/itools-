@@ -11,6 +11,9 @@ export const DEFAULT_SETTINGS = Object.freeze({
   authorLinkTemplate: DEFAULT_TEMPLATE,
   vkAppId: '',
   authMode: 'vkid', // 'vkid' (VK ID, OAuth 2.1 + PKCE) | 'classic' (oauth.vk.com, Implicit Flow)
+  // Запрашивать расширенные доступы wall/photos/video. Включайте, только если VK их выдал вашему приложению:
+  // запрошенный список не может быть шире разрешённого в настройках приложения VK ID.
+  requestExtendedScopes: false,
   loadChunkSize: 100,
 });
 

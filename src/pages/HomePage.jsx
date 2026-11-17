@@ -41,6 +41,23 @@ export default function HomePage() {
         </button>
       </section>
 
+      <section className="tools-grid" aria-label="Инструменты">
+        <button className="tool-card" onClick={() => navigate('/top', { tab: 'sadovod' })}>
+          <span className="tool-icon tool-green">
+            <Icon name="search" size={22} />
+          </span>
+          <b>Топ товаров Садовода</b>
+          <span className="muted small">Поиск сообществ и продавцов во ВКонтакте, самые популярные товары</span>
+        </button>
+        <button className="tool-card" onClick={() => navigate('/top', { tab: 'accounts' })}>
+          <span className="tool-icon tool-violet">
+            <Icon name="user" size={22} />
+          </span>
+          <b>Топ товаров аккаунтов</b>
+          <span className="muted small">Добавьте людей и сообщества — найду их лучшие товары</span>
+        </button>
+      </section>
+
       <section className="stats-grid" aria-label="Статистика рабочей области">
         <button className="stat-card" onClick={() => navigate('/publisher')}>
           <b>{stats.total}</b>
