@@ -1,0 +1,25 @@
+{
+  "name": "itools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "iTools — VK Smart Publisher. Local-first PWA для Android (React + Vite+).",
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "test": "vp test run",
+    "lint": "vp lint src tests",
+    "icons": "node scripts/generate-icons.mjs"
+  },
+  "dependencies": {
+    "@tanstack/react-virtual": "3.14.26",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "6.3.0",
+    "fake-indexeddb": "6.2.8",
+    "vite-plus": "1.7.0"
+  }
+}

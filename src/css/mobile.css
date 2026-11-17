@@ -1,0 +1,108 @@
+/* Раскладка под Android: одна колонка, отступы 16px, безопасные зоны, зона большого пальца внизу */
+.app {
+  min-height: 100dvh;
+}
+.app-main {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px 16px calc(var(--nav-h) + env(safe-area-inset-bottom) + 24px);
+}
+/* место под фиксированную панель действий публикатора */
+.page.has-actionbar {
+  padding-bottom: 130px;
+}
+@media (max-width: 400px) {
+  .net span {
+    display: none;
+  }
+}
+.action-bar {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+@media (max-width: 340px) {
+  .app-main {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .net span,
+  .brand-sub {
+    display: none;
+  }
+  .action-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .action-grid .btn-primary {
+    grid-column: 1 / -1;
+    flex-direction: row;
+  }
+  .page.has-actionbar {
+    padding-bottom: 200px;
+  }
+  .schedule-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .schedule-grid .field:first-child {
+    grid-column: 1 / -1;
+  }
+  .hero h1 {
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 700px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .bottom-nav {
+    left: 50%;
+    right: auto;
+    width: 680px;
+    transform: translateX(-50%);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-radius: 18px 18px 0 0;
+  }
+  .action-bar {
+    border-radius: 18px 18px 0 0;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .sheet {
+    border-radius: 24px;
+    margin-bottom: 24px;
+  }
+  .sheet-backdrop {
+    align-items: center;
+  }
+}
+
+/* Клавиатура открыта (Chrome Android, interactive-widget=resizes-content): прячем панель действий, чтобы не закрывала поле */
+@media (max-height: 520px) {
+  .action-bar {
+    display: none;
+  }
+  .page.has-actionbar {
+    padding-bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Установленное приложение: без выделения текста в навигации */
+@media (display-mode: standalone) {
+  .bottom-nav,
+  .app-header {
+    user-select: none;
+  }
+}
