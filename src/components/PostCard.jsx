@@ -13,9 +13,10 @@ import Icon from './Icon.jsx';
 const VK_TEXT_LIMIT = 16384;
 
 /** Независимый редактор одной публикации. Подписан только на свою запись. */
-function PostCard({ id, number, onSchedule }) {
+function PostCard({ id, number, onSchedule, onManual }) {
   const post = useStore(postsStore, (s) => s.byId[id]);
   const authorLinksEnabled = useStore(settingsStore, (s) => s.authorLinksEnabled);
+  const manualMode = useStore(settingsStore, (s) => s.publishMode !== 'api');
   const template = useStore(settingsStore, (s) => s.authorLinkTemplate);
   const ref = useRef(null);
   useAutoResize(ref, post?.text);
@@ -144,6 +145,13 @@ function PostCard({ id, number, onSchedule }) {
           <Icon name="external" size={16} />
           {post.status === STATUS.SCHEDULED_VK ? `В отложенных ВКонтакте на ${formatDateTime(post.result.scheduledAt)}` : 'Открыть опубликованную запись'}
         </a>
+      ) : post.result?.manual ? (
+        <p className="result-link">
+          <Icon name="check" size={16} />
+          {post.status === STATUS.SCHEDULED_VK
+            ? `Отложена во ВКонтакте вручную${post.result.scheduledAt ? ` на ${formatDateTime(post.result.scheduledAt)}` : ''}`
+            : 'Опубликована вручную через ВКонтакте'}
+        </p>
       ) : null}
 
       <footer className="post-actions">
@@ -166,6 +174,11 @@ function PostCard({ id, number, onSchedule }) {
             <Icon name="clock" size={16} /> Назначить время
           </button>
         )}
+        {manualMode && onManual && !locked ? (
+          <button className="btn btn-primary btn-sm btn-block" onClick={() => onManual(id)}>
+            <Icon name="send" size={16} /> Опубликовать через ВКонтакте
+          </button>
+        ) : null}
       </footer>
     </article>
   );

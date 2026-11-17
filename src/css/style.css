@@ -1019,6 +1019,64 @@ h3 {
   padding-bottom: 80px;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Manual publishing ---------- */
+.manual {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.manual-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.manual-text {
+  margin: 0;
+  max-height: 32vh;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font: inherit;
+  font-size: 14px;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 12px;
+}
+.manual-photos {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+.manual-photos img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+.manual-mark {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.manual-mark p {
+  margin: 0;
+}
+.break {
+  word-break: break-all;
+}
+
 /* ---------- Pages ---------- */
 .page {
   display: flex;

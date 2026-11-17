@@ -14,6 +14,9 @@ export const DEFAULT_SETTINGS = Object.freeze({
   // Запрашивать расширенные доступы wall/photos/video. Включайте, только если VK их выдал вашему приложению:
   // запрошенный список не может быть шире разрешённого в настройках приложения VK ID.
   requestExtendedScopes: false,
+  // 'manual' — публикация через официальное приложение/сайт ВК (право wall не нужно);
+  // 'api' — автоматически через wall.post (нужно право wall).
+  publishMode: 'manual',
   loadChunkSize: 100,
 });
 

@@ -102,6 +102,26 @@ export default function SettingsPage() {
       </button>
 
       <section className="card">
+        <h2 className="card-title">Способ публикации</h2>
+        <fieldset className="radio-group" style={{ marginTop: 0 }}>
+          <legend className="sr-only">Способ публикации</legend>
+          <label>
+            <input type="radio" name="publishMode" checked={s.publishMode !== 'api'} onChange={() => updateSettings({ publishMode: 'manual' })} />
+            <span>
+              <b>Через ВКонтакте вручную</b> — без права wall. iTools готовит текст и фото, вы публикуете в приложении или на сайте ВК
+              одним-двумя нажатиями.
+            </span>
+          </label>
+          <label>
+            <input type="radio" name="publishMode" checked={s.publishMode === 'api'} onChange={() => updateSettings({ publishMode: 'api' })} />
+            <span>
+              <b>Автоматически через VK API</b> — нужно право wall (выдаётся VK по запросу в поддержку).
+            </span>
+          </label>
+        </fieldset>
+      </section>
+
+      <section className="card">
         <h2 className="card-title">Приложение ВКонтакте</h2>
         <label className="field">
           <span>ID приложения (client_id из кабинета VK ID)</span>

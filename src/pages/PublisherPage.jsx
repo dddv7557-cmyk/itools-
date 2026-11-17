@@ -15,6 +15,8 @@ import { requestPersistentStorage } from '../js/database.js';
 import PostCard from '../components/PostCard.jsx';
 import PreviewCard from '../components/PreviewCard.jsx';
 import ScheduleSheet from '../components/ScheduleSheet.jsx';
+import ManualPublishSheet from '../components/ManualPublishSheet.jsx';
+import { manualQueue } from '../js/manual-publish.js';
 import VirtualList from '../components/VirtualList.jsx';
 import { Progress, Toggle } from '../components/Bits.jsx';
 import Icon from '../components/Icon.jsx';
@@ -216,6 +218,7 @@ export default function PublisherPage() {
   const view = route.params.view === 'preview' ? 'preview' : 'editor';
   const [scheduleFor, setScheduleFor] = useState(null); // {id, number}
   const [publishing, setPublishing] = useState(null);
+  const [manual, setManual] = useState(null); // {ids, numbers} — мастер ручной публикации
 
   const posts = useMemo(() => order.map((id) => byId[id]).filter(Boolean), [order, byId]);
   const preview = useMemo(() => (view === 'preview' ? buildPreview(posts, settings) : []), [view, posts, settings]);
@@ -224,10 +227,32 @@ export default function PublisherPage() {
   const allSelected = posts.length > 0 && posts.every((p) => p.selected !== false || FINAL_STATUSES.has(p.status));
 
   const onSchedule = useCallback((id, number) => setScheduleFor({ id, number }), []);
-  const renderEditor = useCallback((id, index) => <PostCard id={id} number={index + 1} onSchedule={onSchedule} />, [onSchedule]);
   const renderPreview = useCallback((id, index) => <PreviewCard item={preview[index]} profile={auth.profile} />, [preview, auth.profile]);
 
+  const openManual = useCallback(
+    (list) => {
+      const ids = manualQueue(list);
+      if (!ids.length) {
+        toast('Нечего публиковать: все записи уже отправлены', 'info');
+        return;
+      }
+      const numbers = Object.fromEntries(order.map((x, i) => [x, i + 1]));
+      setManual({ ids, numbers });
+    },
+    [order],
+  );
+  const onManualOne = useCallback((id) => openManual([postsStore.get().byId[id]]), [openManual]);
+
+  const renderEditor = useCallback(
+    (id, index) => <PostCard id={id} number={index + 1} onSchedule={onSchedule} onManual={onManualOne} />,
+    [onSchedule, onManualOne],
+  );
+
   const doPublish = async (kind) => {
+    if (settings.publishMode !== 'api') {
+      openManual(kind === 'all' ? posts : posts.filter((p) => p.selected !== false));
+      return;
+    }
     if (isPublishing()) return;
     if (!online) {
       toast('Нет интернета. Публикации сохранены — отправьте их, когда появится связь.', 'error', 5000);
@@ -416,6 +441,8 @@ export default function PublisherPage() {
           )}
         </div>
       ) : null}
+
+      {manual ? <ManualPublishSheet ids={manual.ids} numbers={manual.numbers} onClose={() => setManual(null)} /> : null}
 
       {scheduleFor && byId[scheduleFor.id] ? (
         <ScheduleSheet post={byId[scheduleFor.id]} number={scheduleFor.number} onClose={() => setScheduleFor(null)} />
